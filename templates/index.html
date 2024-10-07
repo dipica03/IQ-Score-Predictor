@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IQ Predictor</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        p {
+            color: #555;
+            text-align: center;
+        }
+
+        .input-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        input, select {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            font-size: 18px;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #777;
+        }
+
+        .score-info {
+            margin-top: 40px;
+        }
+
+        .score-info h2 {
+            color: #007bff;
+            text-align: center;
+        }
+
+        .score-info ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .score-info li {
+            background-color: #e9ecef;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 20px;
+        }
+
+        .error {
+            color: red;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>IQ Prediction</h1>
+        <p>Enter your details below to predict your IQ score.</p>
+
+        <form action="/predict" method="post">
+            <div class="input-section">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" min="18" max="65" required>
+
+                <label for="gender">Gender</label>
+                <select id="gender" name="gender" required>
+                    <option value="" disabled selected>Select your gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                </select>
+
+                <label for="ethnicity">Ethnicity</label>
+                <select id="ethnicity" name="ethnicity" required>
+                    <option value="" disabled selected>Select your ethnicity</option>
+                    <option value="Caucasian">Caucasian</option>
+                    <option value="Asian">Asian</option>
+                    <option value="African">African</option>
+                    <option value="Hispanic">Hispanic</option>
+                </select>
+
+                <label for="socioeconomic_status">Socioeconomic Status</label>
+                <select id="socioeconomic_status" name="socioeconomic_status" required>
+                    <option value="" disabled selected>Select your socioeconomic status</option>
+                    <option value="Low">Low</option>
+                    <option value="Middle">Middle</option>
+                    <option value="Upper">Upper</option>
+                </select>
+
+                <label for="location">Location</label>
+                <select id="location" name="location" required>
+                    <option value="" disabled selected>Select your location</option>
+                    <option value="Urban">Urban</option>
+                    <option value="Suburban">Suburban</option>
+                    <option value="Rural">Rural</option>
+                </select>
+
+                <label for="years_of_education">Years of Education</label>
+                <input type="number" id="years_of_education" name="years_of_education" min="8" max="20" required>
+
+                <label for="standardized_test_score">Standardized Test Score</label>
+                <input type="number" id="standardized_test_score" name="standardized_test_score" min="50" max="100" required>
+
+                <label for="memory_test_score">Memory Test Score</label>
+                <input type="number" id="memory_test_score" name="memory_test_score" min="50" max="100" required>
+
+                <label for="problem_solving_score">Problem Solving Score</label>
+                <input type="number" id="problem_solving_score" name="problem_solving_score" min="50" max="100" required>
+
+                <label for="verbal_reasoning_score">Verbal Reasoning Score</label>
+                <input type="number" id="verbal_reasoning_score" name="verbal_reasoning_score" min="50" max="100" required>
+
+                <label for="math_reasoning_score">Math Reasoning Score</label>
+                <input type="number" id="math_reasoning_score" name="math_reasoning_score" min="50" max="100" required>
+
+                <label for="processing_speed_score">Processing Speed Score</label>
+                <input type="number" id="processing_speed_score" name="processing_speed_score" min="50" max="100" required>
+
+                <label for="spatial_reasoning_score">Spatial Reasoning Score</label>
+                <input type="number" id="spatial_reasoning_score" name="spatial_reasoning_score" min="50" max="100" required>
+
+                <button type="submit">Predict IQ</button>
+            </div>
+        </form>
+
+        <!-- Display result or error -->
+        {% if predicted_iq %}
+            <div class="result">
+                <p>Your predicted IQ score is: <strong>{{ predicted_iq }}</strong></p>
+            </div>
+        {% elif error %}
+            <div class="error">
+                <p>Error: {{ error }}</p>
+            </div>
+        {% endif %}
+
+        <div class="score-info">
+            <h2>About the Scores</h2>
+            <ul>
+                <li><strong>Standardized Test Score:</strong> Represents performance on standardized tests (SAT, ACT, etc.) and is often correlated with cognitive abilities.</li>
+                <li><strong>Memory Test Score:</strong> Measures your ability to remember and recall information.</li>
+                <li><strong>Problem Solving Score:</strong> Assesses your problem-solving skills and logical reasoning.</li>
+                <li><strong>Verbal Reasoning Score:</strong> Tests your ability to understand and reason using concepts framed in words.</li>
+                <li><strong>Math Reasoning Score:</strong> Measures your ability to solve problems and reason using math-based concepts.</li>
+                <li><strong>Processing Speed Score:</strong> Evaluates how quickly you can process information and react.</li>
+                <li><strong>Spatial Reasoning Score:</strong> Tests your ability to visualize and manipulate objects in space.</li>
+            </ul>
+        </div>
+
+        <footer>
+            &copy; 2024 IQ Prediction Project. All rights reserved.
+        </footer>
+    </div>
+</body>
+</html>
